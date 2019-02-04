@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: task_manager_web
+    container_name: task_manager_web
+    depends_on:
+      - db
+    volumes:
+      - .:/task_manager:cached
+      - bundle_cache:/bundle_cache
+    ports:
+      - 3000:3000
+#    volumes_from:
+#      - bundle_cache
+    environment:
+      - BUNDLE_PATH=/bundle_cache
+      - DATABASE_HOST=db
+      - DATABASE_USERNAME=postgres
+    restart: unless-stopped
+
+  db:
+    image: postgres:10.3-alpine
+    container_name: task_manager_db
+    restart: unless-stopped
+
+  bundle_cache:
+    image: busybox
+    container_name: task_manager_bundle_cache
+    restart: "no"
+    volumes:
+      - bundle_cache:/bundle_cache
+
+volumes:
+  bundle_cache:
