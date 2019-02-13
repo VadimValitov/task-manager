@@ -49,7 +49,7 @@ class Task < ApplicationRecord
     end
   end
 
-  named_scope :with_states, lambda {|*states| {:conditions => {:state => states}}}
+  scope :with_states, lambda {|*states| {:conditions => {:state => states}}}
 
-  named_scope :without_states, lambda {|*states| {:conditions => ['state NOT IN (?)', states]}}
+  scope :without_states, lambda {|*states| {:conditions => ['state NOT IN (?)', states]}}
 end
